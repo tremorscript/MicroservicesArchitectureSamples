@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest 
+
+  sample-api1:
+    image: ${DOCKER_REGISTRY-}sample-api1
+    build:
+      context: .
+      dockerfile: SampleApi1/Dockerfile
+    depends_on:
+      - sqldata
+
+  sample-api2:
+    image: ${DOCKER_REGISTRY-}sample-api2
+    build:
+      context: .
+      dockerfile: SampleApi2/Dockerfile
+    depends_on:
+      - sqldata
+
+  sample-webapp:
+    image: ${DOCKER_REGISTRY-}sample-webapp
+    build:
+      context: .
+      dockerfile: SampleWebApp/Dockerfile
+    depends_on:
+      - sample-api1
+      - sample-api2
+      - sqldata
