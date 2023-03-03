@@ -61,7 +61,7 @@ public class PersonController : ControllerBase
 
         await _personContext.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(PersonByIdAsync), new { id = personToUpdate.Id }, null);
+        return CreatedAtAction(nameof(PersonByIdAsync), new { id = personToUpdate.Id }, personToUpdate);
     }
 
     //DELETE api/v1/[controller]/id
