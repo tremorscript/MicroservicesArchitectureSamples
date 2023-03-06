@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>34841e92-8cd4-445b-aeaa-bd65110283e0</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.0.13" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
+	<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
+	<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sample.Contracts\Sample.Contracts.csproj" />
+    <ProjectReference Include="..\WebHost.Customization\WebHost.Customization.csproj" />
+  </ItemGroup>
+</Project>
