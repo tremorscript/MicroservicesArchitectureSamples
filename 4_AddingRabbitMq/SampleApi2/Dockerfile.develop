@@ -1,0 +1,17 @@
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0
+ARG BUILD_CONFIGURATION=Debug
+ENV ASPNETCORE_ENVIRONMENT=Development
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+EXPOSE 80
+
+WORKDIR /src
+COPY ["SampleApi2/SampleApi2.csproj", "SampleApi2/"]
+COPY ["NuGet.config", "NuGet.config"]
+
+RUN dotnet restore "SampleApi2/SampleApi2.csproj"
+COPY . .
+WORKDIR "/src/SampleApi2"
+RUN dotnet build "SampleApi2.csproj" -c $BUILD_CONFIGURATION
+
+ENTRYPOINT ["dotnet", "run", "--no-build", "--no-launch-profile", "-c", "$BUILD_CONFIGURATION", "--"]
