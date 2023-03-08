@@ -1,0 +1,103 @@
+admin:
+  access_log_path: "/dev/null"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001
+static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: sample_backend_route
+            virtual_hosts:
+            - name: sample_backend
+              domains:
+              - "*"
+              routes:
+              - name: "s-short"
+                match:
+                  prefix: "/s/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/sample-api1/"
+                  cluster: sampleapi1
+              - name: "s-long"
+                match:
+                  prefix: "/sample-api1/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: sampleapi1 
+              - name: "t-short"
+                match:
+                  prefix: "/a/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/sample-api2/"
+                  cluster: sampleapi2
+              - name: "t-long"
+                match:
+                  prefix: "/sample-api2/"
+                route:
+                  auto_host_rewrite: true
+                  cluster: sampleapi2
+              - name: "agg"
+                match:
+                  prefix: "/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/"
+                  cluster: sampleagg
+          http_filters:
+          - name: envoy.router
+          access_log:
+          - name: envoy.file_access_log
+            filter:
+              not_health_check_filter: {}
+            config:
+              json_format:
+                time: "%START_TIME%"
+                protocol: "%PROTOCOL%"
+                duration: "%DURATION%"
+                request_method: "%REQ(:METHOD)%"
+                request_host: "%REQ(HOST)%"
+                path: "%REQ(X-ENVOY-ORIGINAL-PATH?:PATH)%"
+                response_flags: "%RESPONSE_FLAGS%"
+                route_name: "%ROUTE_NAME%"
+                upstream_host: "%UPSTREAM_HOST%"
+                upstream_cluster: "%UPSTREAM_CLUSTER%"
+                upstream_local_address: "%UPSTREAM_LOCAL_ADDRESS%"
+              path: "/tmp/access.log"
+  clusters:
+  - name: sampleagg
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: web.bff.sample
+        port_value: 80
+  - name: sampleapi1 
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: sample-api1
+        port_value: 80
+  - name: sampleapi2
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: sample-api2
+        port_value: 80
