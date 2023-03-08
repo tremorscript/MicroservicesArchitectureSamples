@@ -1,0 +1,57 @@
+version: '3.4'
+
+services:
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest 
+
+  redisdata:
+    image: redis:alpine
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  sample-api1:
+    image: ${DOCKER_REGISTRY-}sample-api1
+    build:
+      context: .
+      dockerfile: Services/SampleApi1/Dockerfile
+    depends_on:
+      - sqldata
+      - rabbitmq
+
+  sample-api2:
+    image: ${DOCKER_REGISTRY-}sample-api2
+    build:
+      context: .
+      dockerfile: Services/SampleApi2/Dockerfile
+    depends_on:
+      - sqldata
+      - redisdata
+      - rabbitmq
+
+  sample-webapp:
+    image: ${DOCKER_REGISTRY-}sample-webapp
+    build:
+      context: .
+      dockerfile: Web/SampleWebApp/Dockerfile
+    depends_on:
+      - web.bff.sample
+      - websampleapigw
+
+  web.bff.sample:
+    image: ${DOCKER_REGISTRY-}webbffsample
+    build:
+      context: .
+      dockerfile: ApiGateways/Web.Bff.Sample/Dockerfile
+    depends_on:
+    - sample-api1
+    - sample-api2
+    - websampleapigw 
+    - sqldata
+    - redisdata
+    - rabbitmq
+  
+  websampleapigw:
+    image: envoyproxy/envoy:v1.11.1
+
