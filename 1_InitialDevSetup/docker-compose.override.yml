@@ -39,9 +39,9 @@ services:
   sample-webapp:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - urls__sampleapi1=http://sample-api1
-      - urls__sampleapi2=http://sample-api2
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - SampleApi1=http://host.docker.internal:5023
+      - SampleApi2=http://host.docker.internal:5287
     ports:
       - "5122:80"
     volumes:

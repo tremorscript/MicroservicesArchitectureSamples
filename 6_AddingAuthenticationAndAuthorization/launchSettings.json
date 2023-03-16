@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Docker Compose": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "identityapi": "StartDebugging",
+        "sample-api1": "StartDebugging",
+        "sample-api2": "StartDebugging",
+        "sample-webapp": "StartDebugging",
+        "web.bff.sample": "StartDebugging"
+      }
+    }
+  }
+}
