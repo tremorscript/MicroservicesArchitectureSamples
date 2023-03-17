@@ -7,7 +7,7 @@ public static class CustomExtensions
     public static IServiceCollection AddCustomDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
-        services.AddEntityFrameworkSqlServer()
+        services
             .AddDbContext<PersonContext>(options =>
             {
                 options.UseSqlServer(configuration["ConnectionString"],
