@@ -11,16 +11,11 @@ public class SubmitOrderController : ControllerBase
 {
     private ILogger<SubmitOrderController> _logger;
     private IRequestClient<SubmitOrder> _submitOrderRequestClient;
-    private ISendEndpointProvider _sendEndpointProvider;
-    private IPublishEndpoint _publishEndpoint;
 
-    public SubmitOrderController(ILogger<SubmitOrderController> logger, IRequestClient<SubmitOrder> submitOrderRequestClient,
-    ISendEndpointProvider sendEndpointProvider, IPublishEndpoint publishEndpoint)
+    public SubmitOrderController(ILogger<SubmitOrderController> logger, IRequestClient<SubmitOrder> submitOrderRequestClient)
     {
         _logger = logger;
         _submitOrderRequestClient = submitOrderRequestClient;
-        _sendEndpointProvider = sendEndpointProvider;
-        _publishEndpoint = publishEndpoint;
     }
 
     [HttpPost]
