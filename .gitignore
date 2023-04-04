@@ -13,6 +13,8 @@ _site/
 *.sln.docstates
 .vscode/
 !.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
 !.vscode/settings.json
 *.userprefs
 
