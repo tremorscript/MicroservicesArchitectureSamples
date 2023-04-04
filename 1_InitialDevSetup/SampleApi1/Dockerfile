@@ -9,16 +9,14 @@ WORKDIR /src
 
 # It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
 # to take advantage of Docker's build cache, to speed up local container builds
-COPY "InitialSetup.sln" "InitialSetup.sln"
+COPY ["InitialDevSetup.sln", "InitialDevSetup.sln"]
 COPY ["SampleApi1/SampleApi1.csproj", "SampleApi1/"]
 COPY ["SampleApi2/SampleApi2.csproj", "SampleApi2/"]
 COPY ["SampleWebApp/SampleWebApp.csproj", "SampleWebApp/"]
-
-COPY "docker-compose.dcproj" "docker-compose.dcproj"
-
+COPY ["docker-compose.dcproj", "docker-compose.dcproj"]
 COPY "NuGet.config" "NuGet.config"
 
-RUN dotnet restore "InitialSetup.sln"
+RUN dotnet restore "InitialDevSetup.sln"
 
 COPY . .
 WORKDIR "/src/SampleApi1"
