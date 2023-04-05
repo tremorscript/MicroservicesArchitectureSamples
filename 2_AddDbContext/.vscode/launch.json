@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach SampleApi1",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "2_adddbcontext-sample-api1-1",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        },
+{
+            "name": "Attach SampleApi2",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "2_adddbcontext-sample-api2-1",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        },
+{
+            "name": "Attach Sample Web App",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "2_adddbcontext-sample-webapp-1",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        }
+    ]
+}
