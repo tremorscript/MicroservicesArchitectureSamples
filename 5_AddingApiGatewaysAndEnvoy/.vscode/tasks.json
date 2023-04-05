@@ -2,11 +2,42 @@
     "version": "2.0.0",
     "tasks": [
         {
+<
+            "label": "build dotnet",
+            "type": "shell",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/InitialDevSetup.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": [
+                "$msCompile"
+            ]
+        },
+        {
+            "label": "Run docker-compose up",
+            "type": "docker-compose",
+            "dockerCompose": {
+                "up": {
+                    "detached": true,
+                    "build": true
+                },
+                "files": [
+                    "${workspaceFolder}/docker-compose.yml",
+                    "${workspaceFolder}/docker-compose.override.yml"
+                ]
+            }
+        },
+        {
+
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
+
                 "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
@@ -19,7 +50,9 @@
             "type": "process",
             "args": [
                 "publish",
+
                 "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj",
+
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,21 +66,11 @@
                 "watch",
                 "run",
                 "--project",
+
                 "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj"
+
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-            "type": "msbuild",
-            "problemMatcher": [
-                "$msCompile"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "label": "Build: solution",
-            "detail": "Build the SampleApplication.sln solution using dotnet build"
         }
     ]
 }

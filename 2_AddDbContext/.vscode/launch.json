@@ -6,7 +6,7 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-api1-1",
+            "containerName": "2_adddbcontext-sample-api1-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
@@ -16,7 +16,7 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-api2-1",
+            "containerName": "2_adddbcontext-sample-api2-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
@@ -26,11 +26,10 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-webapp-1",
+            "containerName": "2_adddbcontext-sample-webapp-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
-
         }
     ]
 }
