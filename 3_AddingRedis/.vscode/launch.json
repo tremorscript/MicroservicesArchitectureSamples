@@ -6,27 +6,27 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-api1-1",
+            "containerName": "3_addingredis-sample-api1-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
         },
-{
+        {
             "name": "Attach SampleApi2",
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-api2-1",
+            "containerName": "3_addingredis-sample-api2-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
         },
-{
+        {
             "name": "Attach Sample Web App",
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "1_initialdevsetup-sample-webapp-1",
+            "containerName": "3_addingredis-sample-webapp-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
