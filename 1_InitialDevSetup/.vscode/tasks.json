@@ -7,7 +7,9 @@
             "command": "dotnet",
             "args": [
                 "build",
-                "${workspaceFolder}/InitialDevSetup.sln"
+                "${workspaceFolder}/InitialDevSetup.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": [
                 "$msCompile"
