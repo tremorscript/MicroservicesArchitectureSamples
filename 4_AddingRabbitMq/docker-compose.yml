@@ -16,6 +16,7 @@ services:
     build:
       context: .
       dockerfile: SampleApi1/Dockerfile
+      network: host
     depends_on:
       - sqldata
       - rabbitmq
@@ -25,6 +26,7 @@ services:
     build:
       context: .
       dockerfile: SampleApi2/Dockerfile
+      network: host
     depends_on:
       - sqldata
       - redisdata
@@ -35,6 +37,7 @@ services:
     build:
       context: .
       dockerfile: SampleWebApp/Dockerfile
+      network: host
     depends_on:
       - sample-api1
       - sample-api2

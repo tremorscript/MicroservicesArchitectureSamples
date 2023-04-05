@@ -6,16 +6,27 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
+
+# It's important to keep lines from here down to "COPY . ." identical in all Dockerfiles
+# to take advantage of Docker's build cache, to speed up local container builds
+COPY "SampleApplication.sln" "SampleApplication.sln"
+COPY ["SampleApi1/SampleApi1.csproj", "SampleApi1/"]
+COPY ["SampleApi2/SampleApi2.csproj", "SampleApi2/"]
 COPY ["SampleWebApp/SampleWebApp.csproj", "SampleWebApp/"]
-RUN dotnet restore "SampleWebApp/SampleWebApp.csproj"
+COPY ["WebHost.Customization/WebHost.Customization.csproj", "WebHost.Customization/"]
+COPY ["Sample.Contracts/Sample.Contracts.csproj", "Sample.Contracts/"]
+COPY "docker-compose.dcproj" "docker-compose.dcproj"
+COPY "NuGet.config" "NuGet.config"
+
+RUN dotnet restore "SampleApplication.sln"
+
 COPY . .
 WORKDIR "/src/SampleWebApp"
-RUN dotnet build "SampleWebApp.csproj" -c Release -o /app/build
+RUN dotnet publish --no-restore -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "SampleWebApp.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "SampleWebApp.dll"]
