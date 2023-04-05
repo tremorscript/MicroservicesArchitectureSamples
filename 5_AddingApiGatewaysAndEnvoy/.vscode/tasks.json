@@ -2,6 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
+<
             "label": "build dotnet",
             "type": "shell",
             "command": "dotnet",
@@ -30,12 +31,14 @@
             }
         },
         {
+
             "label": "build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/SampleApi1/SampleApi1.csproj",
+
+                "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -47,7 +50,9 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/SampleApi1/SampleApi1.csproj",
+
+                "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj",
+
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -61,65 +66,11 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/SampleApi1/SampleApi1.csproj"
+
+                "${workspaceFolder}/Services/SampleApi1/SampleApi1.csproj"
+
             ],
             "problemMatcher": "$msCompile"
-        },
-        {
-            "type": "docker-build",
-            "label": "docker-build: debug",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "1initialdevsetup:dev",
-                "target": "base",
-                "dockerfile": "${workspaceFolder}/SampleApi1/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/SampleApi1/SampleApi1.csproj"
-            }
-        },
-        {
-            "type": "docker-build",
-            "label": "docker-build: release",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "1initialdevsetup:latest",
-                "dockerfile": "${workspaceFolder}/SampleApi1/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/SampleApi1/SampleApi1.csproj"
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: debug",
-            "dependsOn": [
-                "docker-build: debug"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/SampleApi1/SampleApi1.csproj",
-                "enableDebugging": true
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: release",
-            "dependsOn": [
-                "docker-build: release"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/SampleApi1/SampleApi1.csproj"
-            }
         }
     ]
 }
