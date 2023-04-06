@@ -28,6 +28,20 @@
                     "${workspaceFolder}/docker-compose.override.yml"
                 ]
             }
+        },
+        {
+            "label": "Run docker-compose down",
+            "type": "docker-compose",
+            "dockerCompose": {
+                "down": {
+                    "removeImages": "local",
+                    "removeVolumes": false 
+                },
+                "files": [
+                    "${workspaceFolder}/docker-compose.yml",
+                    "${workspaceFolder}/docker-compose.override.yml"
+                ]
+            }
         }
     ]
 }

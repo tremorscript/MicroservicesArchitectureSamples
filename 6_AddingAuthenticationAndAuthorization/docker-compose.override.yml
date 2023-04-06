@@ -31,7 +31,7 @@ services:
   sample-api1:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionString=Server=sqldata;Database=PersonDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
+      - ConnectionString=Server=sqldata;Database=IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
     ports:
@@ -86,14 +86,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DefaultConnection=Server=sqldata;Database=PersonDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
+      - DefaultConnection=Server=sqldata;Database=IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
       - SampleApi2Client=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5287
       - SampleApi1Client=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5023
       - SampleBffClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
       - SampleWebAppClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5122
 
     ports:
-      - - "5105:80"
+      - "5105:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

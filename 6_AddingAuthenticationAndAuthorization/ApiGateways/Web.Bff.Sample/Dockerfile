@@ -15,6 +15,8 @@ COPY ["Services/SampleApi1/SampleApi1.csproj", "Services/SampleApi1/"]
 COPY ["Services/SampleApi2/SampleApi2.csproj", "Services/SampleApi2/"]
 COPY ["Services/IdentityApi/IdentityApi.csproj", "Services/IdentityApi/"]
 COPY ["Web/SampleWebApp/SampleWebApp.csproj", "Web/SampleWebApp/"]
+COPY ["BuildingBlocks/Sample.Contracts/Sample.Contracts.csproj", "BuildingBlocks/Sample.Contracts/"]
+COPY ["BuildingBlocks/WebHost.Customization/WebHost.Customization.csproj", "BuildingBlocks/WebHost.Customization/"]
 COPY ["ApiGateways/Web.Bff.Sample/Web.Bff.Sample.csproj", "ApiGateways/Web.Bff.Sample/"]
 COPY "docker-compose.dcproj" "docker-compose.dcproj"
 COPY "NuGet.config" "NuGet.config"
@@ -22,12 +24,11 @@ RUN dotnet restore "SampleApplication.sln"
 
 COPY . .
 WORKDIR "/src/ApiGateways/Web.Bff.Sample"
-RUN dotnet build "Web.Bff.Sample.csproj" -c Release -o /app/build
+RUN dotnet publish --no-restore -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "Web.Bff.Sample.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Web.Bff.Sample.dll"]
