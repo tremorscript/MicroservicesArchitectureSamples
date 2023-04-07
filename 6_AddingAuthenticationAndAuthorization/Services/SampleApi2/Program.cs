@@ -7,13 +7,13 @@ using System.IdentityModel.Tokens.Jwt;
 
 internal class Program
 {
-    private static void ConfigureAuth(IApplicationBuilder app)
+    private static void ConfigureAuthenticationAndAuthorization(IApplicationBuilder app)
     {
         app.UseAuthentication();
         app.UseAuthorization();
     }
 
-    private static void ConfigureAuthService(IServiceCollection services, string identityUrl)
+    private static void AddAuthorization(IServiceCollection services, string identityUrl)
     {
         // prevent from mapping "sub" claim to nameidentifier.
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
@@ -35,16 +35,8 @@ internal class Program
         });
     }
 
-    private static void Main(string[] args)
+    private static void AddSwaggerAuthorization(WebApplicationBuilder builder)
     {
-        var builder = WebApplication.CreateBuilder(args);
-
-        // Add services to the container.
-        builder.Services.AddControllers(x =>
-        {
-            x.SuppressAsyncSuffixInActionNames = false;
-        });
-        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
@@ -61,11 +53,11 @@ internal class Program
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
-                        TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrl")}/connect/authorize"),
+                        TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrl")}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                                 {
-                            { "sampleapi2", "Sample API 2" }
+                                    { "sampleapi2", "Sample API 2" }
                                 }
                     }
                 }
@@ -73,10 +65,22 @@ internal class Program
 
             options.OperationFilter<AuthorizeCheckOperationFilter>();
         });
+    }
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-        var identityUrl = builder.Configuration.GetValue<string>("IdentityUrl");
-        ConfigureAuthService(builder.Services, identityUrl);
-
+        // Add services to the container.
+        builder.Services.AddControllers(x =>
+        {
+            x.SuppressAsyncSuffixInActionNames = false;
+        });
+        builder.Services.AddEndpointsApiExplorer();
+        AddSwaggerAuthorization(builder);
+        
+        var identityUrl = builder.Configuration["IdentityUrl"];
+        AddAuthorization(builder.Services, identityUrl);
+        
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("CorsPolicy",
@@ -86,6 +90,7 @@ internal class Program
                 .AllowAnyHeader()
                 .AllowCredentials());
         });
+        
 
         builder.Services.AddSingleton<IProductRepository, ProductRepository>();
 
@@ -133,11 +138,13 @@ internal class Program
 
         app.UseRouting();
         app.UseCors("CorsPolicy");
-        ConfigureAuth(app);
+
+        ConfigureAuthenticationAndAuthorization(app);
 
         app.MapDefaultControllerRoute();
         app.MapControllers();
 
         app.Run();
     }
+
 }

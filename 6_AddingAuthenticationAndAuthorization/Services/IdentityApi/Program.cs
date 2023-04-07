@@ -49,7 +49,7 @@ namespace IdentityApi
                 {
                     Log.Information("Seeding database...");
                     var config = host.Services.GetRequiredService<IConfiguration>();
-                    var connectionString = config.GetConnectionString("DefaultConnection");
+                    var connectionString = config["DefaultConnection"];
                     SeedData.EnsureSeedData(connectionString, config);
                     Log.Information("Done seeding database.");
                     return 0;

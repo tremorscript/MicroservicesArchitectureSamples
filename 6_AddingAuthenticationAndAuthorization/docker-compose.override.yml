@@ -34,6 +34,8 @@ services:
       - ConnectionString=Server=sqldata;Database=IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - PATH_BASE=/sample-api1
     ports:
       - "5023:80"
     volumes:
@@ -46,6 +48,8 @@ services:
       - ConnectionString=${ESHOP_AZURE_REDIS_BASKET_DB:-redisdata}
       - EventBusConnection=${ESHOP_AZURE_SERVICE_BUS:-rabbitmq}
       - ASPNETCORE_URLS=http://0.0.0.0:80
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105
+      - PATH_BASE=/sample-api2
     ports:
       - "5287:80"
     volumes:
@@ -57,6 +61,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - BffUrl=http://websampleapigw
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105 
     ports:
       - "5122:80"
     volumes:
@@ -69,6 +74,7 @@ services:
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - urls__sampleapi1=http://sample-api1
       - urls__sampleapi2=http://sample-api2
+      - IdentityUrl=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5105 
     ports:
       - "5121:80"
     volumes:
@@ -86,7 +92,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://0.0.0.0:80
-      - DefaultConnection=Server=sqldata;Database=IdentityDb;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
+      - DefaultConnection=Server=sqldata;Database=IdentityDb1;User Id=sa;Password=Pass@word;Encrypt=False;TrustServerCertificate=true
       - SampleApi2Client=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5287
       - SampleApi1Client=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5023
       - SampleBffClient=http://${ESHOP_EXTERNAL_DNS_NAME_OR_IP}:5121
@@ -103,6 +109,3 @@ volumes:
     external: false
   eshop-redisdata:
     external: false
-
-
-

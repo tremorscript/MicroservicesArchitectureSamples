@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SampleApi1.Infrastructure;
 using SampleApi1.Models;
@@ -8,6 +9,7 @@ namespace SampleApi1.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[Authorize]
 public class PersonController : ControllerBase
 {
     private readonly PersonContext _personContext;
@@ -24,6 +26,7 @@ public class PersonController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType(typeof(Person), (int)HttpStatusCode.OK)]
+    [Authorize]
     public async Task<ActionResult<Person>> PersonByIdAsync(int id)
     {
         if (id <= 0)

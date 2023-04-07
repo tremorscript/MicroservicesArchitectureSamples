@@ -13,7 +13,11 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        
+        //One way to populate configuration to an object.
         builder.Services.Configure<UrlsConfig>(builder.Configuration.GetSection("urls"));
+        
+        //Named Client
         builder.Services.AddHttpClient<SampleApi1Controller>();
 
 

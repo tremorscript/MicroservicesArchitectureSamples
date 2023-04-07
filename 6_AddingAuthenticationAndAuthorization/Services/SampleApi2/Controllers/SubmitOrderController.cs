@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Contracts;
 using SampleApi2.Models;
@@ -7,6 +8,7 @@ namespace SampleApi2.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class SubmitOrderController : ControllerBase
 {
     private ILogger<SubmitOrderController> _logger;
