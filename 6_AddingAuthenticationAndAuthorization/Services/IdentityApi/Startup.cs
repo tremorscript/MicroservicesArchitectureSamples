@@ -28,7 +28,7 @@ namespace IdentityApi
         {
             services.AddControllersWithViews();
 
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Configuration["DefaultConnection"];
 
             var builder = services.AddIdentityServer(options =>
             {

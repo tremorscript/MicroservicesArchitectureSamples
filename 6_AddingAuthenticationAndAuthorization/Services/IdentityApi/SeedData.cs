@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using IdentityServer4.EntityFramework.Storage;
 using Serilog;
+using System.Reflection;
 
 namespace IdentityApi
 {
@@ -17,14 +18,15 @@ namespace IdentityApi
         public static void EnsureSeedData(string connectionString, IConfiguration configuration)
         {
             var services = new ServiceCollection();
-            services.AddOperationalDbContext(options =>
-            {
-                options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
-            });
-            services.AddConfigurationDbContext(options =>
-            {
-                options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
-            });
+            var migrationsAssembly = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+             services.AddOperationalDbContext(options =>
+             {
+                 options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+             });
+             services.AddConfigurationDbContext(options =>
+             {
+                 options.ConfigureDbContext = db => db.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+             });
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -34,7 +36,7 @@ namespace IdentityApi
 
                 var context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
                 context.Database.Migrate();
-                EnsureSeedData(context,configuration);
+                EnsureSeedData(context, configuration);
             }
         }
 

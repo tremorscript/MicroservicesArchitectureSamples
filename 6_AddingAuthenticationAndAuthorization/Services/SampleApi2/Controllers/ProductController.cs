@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -5,6 +6,7 @@ namespace SampleApi2.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[Authorize]
 public class ProductController : ControllerBase
 {
     private readonly IProductRepository repository;
