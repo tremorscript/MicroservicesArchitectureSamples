@@ -12,8 +12,13 @@ WORKDIR /src
 COPY "SampleApplication.sln" "SampleApplication.sln"
 COPY ["Services/SampleApi1/SampleApi1.csproj", "Services/SampleApi1/"]
 COPY ["Services/SampleApi2/SampleApi2.csproj", "Services/SampleApi2/"]
+<<<<<<< HEAD
 COPY ["Web/SampleWebApp/SampleWebApp.csproj", "Web/SampleWebApp/"]
 COPY ["Web/DuendeIdentityServer6/DuendeIdentityServer6.csproj", "Web/DuendeIdentityServer6/"]
+=======
+COPY ["Services/IdentityApi/IdentityApi.csproj", "Services/IdentityApi/"]
+COPY ["Web/SampleWebApp/SampleWebApp.csproj", "Web/SampleWebApp/"]
+>>>>>>> main
 COPY ["BuildingBlocks/Sample.Contracts/Sample.Contracts.csproj", "BuildingBlocks/Sample.Contracts/"]
 COPY ["BuildingBlocks/WebHost.Customization/WebHost.Customization.csproj", "BuildingBlocks/WebHost.Customization/"]
 COPY ["ApiGateways/Web.Bff.Sample/Web.Bff.Sample.csproj", "ApiGateways/Web.Bff.Sample/"]
