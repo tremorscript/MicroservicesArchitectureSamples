@@ -11,7 +11,7 @@ _site/
 *.user
 *.userosscache
 *.sln.docstates
-.vscode/
+#.vscode/
 !.vscode/extensions.json
 !.vscode/settings.json
 *.userprefs

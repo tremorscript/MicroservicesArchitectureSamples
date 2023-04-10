@@ -6,7 +6,6 @@ EXPOSE 80
 
 WORKDIR /src
 COPY ["SampleApi1/SampleApi1.csproj", "SampleApi1/"]
-COPY ["NuGet.config", "NuGet.config"]
 
 RUN dotnet restore "SampleApi1/SampleApi1.csproj"
 COPY . .
