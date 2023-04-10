@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using SampleApi1.Components;
 using SampleApi1.Infrastructure;
@@ -18,12 +19,17 @@ public class Program
         // prevent from mapping "sub" claim to nameidentifier.
         JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
 
-        services.AddAuthentication("Bearer").AddJwtBearer(options =>
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options =>
         {
             options.Authority = identityUrl;
             options.RequireHttpsMetadata = false;
             options.Audience = "sampleapi1";
             options.TokenValidationParameters.ValidateAudience = false;
+            options.TokenValidationParameters.ValidateIssuer = false;
         });
         services.AddAuthorization(options =>
         {
@@ -53,8 +59,8 @@ public class Program
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrl")}/connect/authorize"),
-                        TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrl")}/connect/token"),
+                        AuthorizationUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
+                        TokenUrl = new Uri($"{builder.Configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                                 {
                                     { "sampleapi1", "Sample API 1" }
@@ -73,13 +79,12 @@ public class Program
         // Add services to the container.
         builder.Services.AddControllers(x =>
         {
-            x.SuppressAsyncSuffixInActionNames=false;
+            x.SuppressAsyncSuffixInActionNames = false;
         });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         AddSwaggerAuthorization(builder);
-        
         var identityUrl = builder.Configuration["IdentityUrl"];
         AddAuthorization(builder.Services, identityUrl);
 
@@ -130,6 +135,8 @@ public class Program
         {
             setup.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "SampleApi2 V1");
             setup.OAuthClientId("sampleapi1swaggerui");
+            setup.OAuthClientSecret(string.Empty);
+            setup.OAuthRealm(string.Empty);
             setup.OAuthAppName("Sample Api1 Swagger UI");
         });
 

@@ -24,6 +24,7 @@ internal class Program
             options.RequireHttpsMetadata = false;
             options.Audience = "sampleapi2";
             options.TokenValidationParameters.ValidateAudience = false;
+            options.TokenValidationParameters.ValidateIssuer = false;
         });
         services.AddAuthorization(options =>
         {

@@ -59,12 +59,11 @@ services:
   websampleapigw:
     image: envoyproxy/envoy:v1.11.1
 
-
-  identityapi:
-    image: ${DOCKER_REGISTRY-}identityapi
+  duendeidentityserver6:
+    image: ${DOCKER_REGISTRY-}duendeidentityserver6
     build:
       context: .
-      dockerfile: Services/IdentityApi/Dockerfile
+      dockerfile: Web/DuendeIdentityServer6/Dockerfile
       network: host
     depends_on:
     - sqldata
