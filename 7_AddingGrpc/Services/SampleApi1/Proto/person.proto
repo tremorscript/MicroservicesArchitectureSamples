@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcPerson";
+
+package PersonApi;
+
+service Person {
+	rpc GetPersonById(PersonRequest) returns (PersonResponse) {}
+	rpc UpdatePerson(PersonRequest) returns (PersonResponse) {}
+}
+
+message PersonRequest {
+	int32 id = 1;
+    string firstname = 2;
+    string lastname = 3;
+}
+
+message PersonResponse {
+	int32 id = 1;
+    string firstname = 2;
+    string lastname = 3;
+}
