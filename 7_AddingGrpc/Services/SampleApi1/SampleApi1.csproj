@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>34841e92-8cd4-445b-aeaa-bd65110283e0</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+		<GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+		<!-- MassTransit and RabbitMq integration -->
+		<PackageReference Include="MassTransit" />
+		<PackageReference Include="MassTransit.RabbitMQ" />
+		<PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" />
+		<!-- Swagger and OpenApi integration-->
+		<PackageReference Include="Swashbuckle.AspNetCore" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+		<!-- Entity Framework Core Integration-->
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<!-- Authentication and Authorization integration-->
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+
+		<!-- Add Grpc -->
+		<PackageReference Include="Google.Protobuf" />
+		<PackageReference Include="Grpc.AspNetCore.Server" />
+		<PackageReference Include="Grpc.Tools" PrivateAssets="All" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Proto\person.proto" GrpcServices="Server" Generator="MSBuild:Compile" />
+		<Content Include="@(Protobuf)" />
+		<None Remove="@(Protobuf)" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\BuildingBlocks\Sample.Contracts\Sample.Contracts.csproj" />
+		<ProjectReference
+			Include="..\..\BuildingBlocks\WebHost.Customization\WebHost.Customization.csproj" />
+	</ItemGroup>
+</Project>
