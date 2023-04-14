@@ -1,0 +1,79 @@
+version: '3.4'
+
+services:
+
+  sqldata:
+    image: mcr.microsoft.com/mssql/server:2019-latest 
+
+  redisdata:
+    image: redis:alpine
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  sample-api1:
+    image: ${DOCKER_REGISTRY-}sample-api1
+    build:
+      context: .
+      dockerfile: Services/SampleApi1/Dockerfile
+      network: host
+    depends_on:
+      - sqldata
+      - rabbitmq
+
+  sample-api2:
+    image: ${DOCKER_REGISTRY-}sample-api2
+    build:
+      context: .
+      dockerfile: Services/SampleApi2/Dockerfile
+      network: host
+    depends_on:
+      - sqldata
+      - redisdata
+      - rabbitmq
+
+  webhooks-api:
+    image: ${DOCKER_REGISTRY-}webhooks-api1
+    build:
+      context: .
+      dockerfile: Services/Webhooks.API/Dockerfile
+      network: host
+    depends_on:
+      - sqldata
+
+  sample-webapp:
+    image: ${DOCKER_REGISTRY-}sample-webapp
+    build:
+      context: .
+      dockerfile: Web/SampleWebApp/Dockerfile
+      network: host
+    depends_on:
+      - web.bff.sample
+      - websampleapigw
+
+  web.bff.sample:
+    image: ${DOCKER_REGISTRY-}webbffsample
+    build:
+      context: .
+      dockerfile: ApiGateways/Web.Bff.Sample/Dockerfile
+      network: host
+    depends_on:
+    - sample-api1
+    - sample-api2
+    - websampleapigw 
+    - sqldata
+    - redisdata
+    - rabbitmq
+  
+  websampleapigw:
+    image: envoyproxy/envoy:v1.11.1
+
+  duendeidentityserver6:
+    image: ${DOCKER_REGISTRY-}duendeidentityserver6
+    build:
+      context: .
+      dockerfile: Web/DuendeIdentityServer6/Dockerfile
+      network: host
+    depends_on:
+    - sqldata
+
