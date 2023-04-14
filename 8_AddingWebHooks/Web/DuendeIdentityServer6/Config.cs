@@ -18,6 +18,7 @@ public static class Config
                 new ApiScope("sampleapi2"),
                 new ApiScope("sampleapi1"),
                 new ApiScope("samplebffwebapp"),
+                new ApiScope("webhooksapi")
         };
 
     public static IEnumerable<Client> GetClients(IConfiguration configuration)
@@ -96,6 +97,19 @@ public static class Config
                     AllowedScopes =
                     {
                         "samplebffwebapp"
+                    }
+                },
+                new Client
+                {
+                    ClientId = "webhooksapiswaggerui",
+                    ClientName = "Webhooks Swagger UI",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RedirectUris = { $"{configuration["WebhooksApiClient"]}/swagger/oauth2-redirect.html" },
+                    PostLogoutRedirectUris = { $"{configuration["WebhooksApiClient"]}/swagger/" },
+                    AllowedScopes =
+                    {
+                        "webhooksapi"
                     }
                 }
             };

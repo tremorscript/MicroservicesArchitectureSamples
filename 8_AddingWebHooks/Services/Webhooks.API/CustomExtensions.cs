@@ -37,7 +37,7 @@ public static class CustomExtensions
             options.AddPolicy("ApiScope", policy =>
             {
                 policy.RequireAuthenticatedUser();
-                policy.RequireClaim("scope", "webhooks");
+                policy.RequireClaim("scope", "webhooksapi");
             });
         });
         return services;
@@ -65,7 +65,7 @@ public static class CustomExtensions
                         TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
                         Scopes = new Dictionary<string, string>()
                                 {
-                                    { "webhooks", "Webhooks API 1" }
+                                    { "webhooksapi", "Webhooks API 1" }
                                 }
                     }
                 }

@@ -6,7 +6,7 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "7_addinggrpc-sample-api1-1",
+            "containerName": "8_addingwebhooks-sample-api1-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
@@ -16,7 +16,7 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "7_addinggrpc-sample-api2-1",
+            "containerName": "8_addingwebhooks-sample-api2-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
@@ -26,7 +26,7 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "7_addinggrpc-sample-webapp-1",
+            "containerName": "8_addingwebhooks-sample-webapp-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }
@@ -36,7 +36,17 @@
             "type": "docker",
             "request": "attach",
             "platform": "netCore",
-            "containerName": "7_addinggrpc-web.bff.sample-1",
+            "containerName": "8_addingwebhooks-web.bff.sample-1",
+            "sourceFileMap": {
+                "/src": "${workspaceFolder}"
+            }
+        },
+{
+            "name": "Attach Webhooks Api",
+            "type": "docker",
+            "request": "attach",
+            "platform": "netCore",
+            "containerName": "8_addingwebhooks-webhooks-api-1",
             "sourceFileMap": {
                 "/src": "${workspaceFolder}"
             }

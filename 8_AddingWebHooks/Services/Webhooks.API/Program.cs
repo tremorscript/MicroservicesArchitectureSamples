@@ -1,4 +1,5 @@
 using Webhooks.API.Infrastructure;
+using Webhooks.API.Services;
 
 public class Program
 {
@@ -22,7 +23,7 @@ public class Program
         .UseSwaggerUI(setup =>
         {
             setup.SwaggerEndpoint($"{(!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty)}/swagger/v1/swagger.json", "SampleApi2 V1");
-            setup.OAuthClientId("webhooksswaggerui");
+            setup.OAuthClientId("webhooksapiswaggerui");
             setup.OAuthClientSecret(string.Empty);
             setup.OAuthRealm(string.Empty);
             setup.OAuthAppName("Webhooks Api Swagger UI");
@@ -48,7 +49,13 @@ public class Program
                 .AddCustomAuthentication(identityUrl)
                 .AddCustomAuthorization(builder.Configuration)
                 .AddSwagger(builder.Configuration)
-                .AddCustomDbContext(builder.Configuration);
+                .AddHttpClientServices(builder.Configuration)
+                .AddCustomDbContext(builder.Configuration)
+                .AddSingleton<IHttpContextAccessor, HttpContextAccessor>()
+                .AddTransient<IIdentityService, IdentityService>()
+                .AddTransient<IGrantUrlTesterService, GrantUrlTesterService>()
+                .AddTransient<IWebhooksRetriever, WebhooksRetriever>()
+                .AddTransient<IWebhooksSender, WebhooksSender>();
 
         var app = builder.Build();
 
